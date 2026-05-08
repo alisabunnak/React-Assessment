@@ -20,6 +20,20 @@ function OwnerPage() {
       });
   }, []);
 
+  const handleSave = () => {
+    if (!form.name || !form.lastName || !form.position) return;
+    fetch("https://67eca027aa794fb3222e43e2.mockapi.io/members", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .then((res) => res.json())
+      .then((newMember) => {
+        setMembers([...members, newMember]);
+        setForm({ name: "", lastName: "", position: "" });
+      });
+  };
+
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
 
@@ -76,7 +90,7 @@ function OwnerPage() {
               onChange={(e) => setForm({ ...form, position: e.target.value })}
               className="flex-1 px-4 py-3 rounded-lg bg-white border border-gray-200"
             />
-            <button className="px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600">
+            <button onClick={handleSave} className="px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600">
               Save
             </button>
           </div>
