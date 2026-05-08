@@ -20,6 +20,14 @@ function OwnerPage() {
       });
   }, []);
 
+  const handleDelete = (id) => {
+    fetch(`https://67eca027aa794fb3222e43e2.mockapi.io/members/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setMembers(members.filter((member) => member.id !== id));
+    });
+  };
+
   const handleSave = () => {
     if (!form.name || !form.lastName || !form.position) return;
     fetch("https://67eca027aa794fb3222e43e2.mockapi.io/members", {
@@ -118,7 +126,10 @@ function OwnerPage() {
               <td className="px-6 py-3">{member.position}</td>
               {section === "admin" && (
                 <td className="px-6 py-3 text-center">
-                  <button className="text-red-500 font-semibold hover:text-red-700">
+                  <button
+                    onClick={() => handleDelete(member.id)}
+                    className="text-red-500 font-semibold hover:text-red-700"
+                  >
                     Delete
                   </button>
                 </td>
